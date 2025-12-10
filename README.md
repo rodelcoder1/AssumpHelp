@@ -34,7 +34,7 @@ git clone https://github.com/yourusername/AssumpHelp.git
 cd AssumpHelp
 pip install -r requirements.txt
 ```
-# Basic Usage
+#   Using Our Library
 ```python
 from hypothesis import Hypothesis
 import numpy as np
@@ -86,13 +86,30 @@ x — independent variable
 β — model coefficients
 ε — residual error
 # Summary Fields:
--Coef.    → estimated parameters
--Std.Err. → uncertainty of estimate
--t value  → strength of effect
 
--Pr(>|t|) → significance (p-value)
--R²       → goodness of fit
--AIC/BIC  → model comparison metrics
+1. Linearity (Check for a straight-line relationship)
+
+Statistical Test: Ramsey RESET Test (Outputs the F-statistic and p-value).
+
+Visual Plot: Residuals vs Fitted Plot (Look for a random scatter of points, a curve means a violation).
+
+2. Homoscedasticity (Check for equal spread of errors)
+
+Statistical Test: Breusch-Pagan Test (Outputs the BP-statistic and p-value).
+
+Visual Plot: Scale-Location Plot (Look for a flat, horizontal line; a fanning shape means unequal spread).
+
+3. Normality (Check if errors follow a bell curve)
+
+Statistical Test: Shapiro-Wilk Test (Outputs the W-statistic and p-value).
+
+Visual Plot: Normal Q-Q Plot (Check that most points follow the diagonal line; significant bending means non-normal errors).
+
+4. Independence (Check for uncorrelated errors)
+
+Statistical Test: Durbin-Watson (DW) Statistic (Outputs a single value for interpretation).
+
+Visual Plot: Residuals vs Order Plot (Look for a random scatter of points over the observation index; patterns mean autocorrelation).
 # Project Structure
 ```txt
 ├── AssumpHelp/
