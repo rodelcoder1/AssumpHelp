@@ -1,5 +1,4 @@
 import statsmodels.api as sm
-
 from .hypothesis import Hypothesis
 from .utilities import prepare_vars, interpret_pval, plot_assump, load_output
 
@@ -10,7 +9,8 @@ class Normality(Hypothesis):
     - Q-Q plot
     """
     def fit(self):
-        self.fitted, self.residuals = prepare_vars(self.model, self.x, self.y)
+        self.fitted_model = sm.OLS(self.y, self.x_cons).fit()
+        self.fitted, self.residuals = prepare_vars(self.fitted_model, self.x_cons, self.y)
    
     def test_normality(self):
         """
@@ -22,7 +22,7 @@ class Normality(Hypothesis):
         print("Shapiro-Wilk Test for Normality")
         print(f"W-statistic: {shapiro_stat:.4f}      p-value: {shapiro_pval:.4f}")
         print("\nInterpretation:\n")
-        interpretation = interpret_pval(result_pval, "normality")
+        interpretation = interpret_pval(shapiro_pval, "normality")
         print("\n" + interpretation)
         
     
