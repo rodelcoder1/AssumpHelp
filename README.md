@@ -1,187 +1,208 @@
-# AssumpHelp
-
-AssumpHelp is a Python-based linear regression helper designed to make statistical assumptions, regression fitting, model summaries, and diagnostic checks easier for beginners and students.
-It provides clear summaries, structured outputs, and a simple class-based design that organizes your full regression workflow.
-
+# AssumHelp
+# Overview
+This Jupyter notebook provides a comprehensive framework for testing the fundamental assumptions of linear regression models. It implements automated diagnostic tools to check whether your regression model meets the statistical requirements necessary for valid inference and prediction.
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
----
 
-## Features
+# Purpose
+Linear regression models rely on several key assumptions to produce reliable results. Violations of these assumptions can lead to biased estimates, incorrect standard errors, and unreliable predictions. This notebook provides a systematic approach to:
 
--Simple class-based interface (Hypothesis)
--Automatically fits OLS linear regressions
--Generates statsmodels-style summaries
--Computes regression assumptions (linearity, residual behavior)
--Provides prediction utilities
--Supports NumPy, Pandas, and arrays
--Easy to extend for school or beginner ML projects
--Clean and readable notebook workflow0=\k0\k
+Test regression assumptions using formal statistical tests
+Visualize diagnostic plots to identify assumption violations
+Interpret results with clear, actionable guidance
+Generate comprehensive reports summarizing all diagnostic findings
+# Key Features
+# 🧪 Statistical Tests Implemented
+Ramsey RESET Test - Tests for linearity assumptions
 
----
+Breusch-Pagan Test - Tests for homoscedasticity (constant variance)
 
-# Installation
-Since this is a notebook-based project, dependencies must be installed manually.
-# Install required packages:
-```bash
-pip install numpy pandas matplotlib scikit-learn statsmodels tqdm pyyaml requests
-```
-If you cloned the repository:
+Shapiro-Wilk Test - Tests for normality of residuals
 
-```bash
-git clone https://github.com/yourusername/AssumpHelp.git
-cd AssumpHelp
-pip install -r requirements.txt
-```
-#   Using Our Library
-```python
+Durbin-Watson Test - Tests for independence of residuals
+
+# 📊 Diagnostic Visualizations
+Residuals vs Fitted Plot - Linearity and homoscedasticity assessment
+
+Scale-Location Plot - Homoscedasticity verification
+
+Q-Q Plot - Normality assessment
+
+Residuals vs Order Plot - Independence verification
+
+# 🎯 Automated Interpretation
+Built-in interpretation guides for all statistical tests
+Clear guidance on what to look for in diagnostic plots
+Automated result summaries with actionable recommendations
+# Architecture
+# Core Classes
+# Hypothesis (Base Class)
+The foundational class that stores regression models and data, providing common functionality for all diagnostic tests.
+
+# Linearity
+Purpose: Tests the linearity assumption
+Methods: test_linearity(), plot_linearity()
+Test: Ramsey RESET test
+Plot: Residuals vs Fitted values
+# Homoscedasticity
+Purpose: Tests for constant variance of residuals
+Methods: test_homoscedasticity(), plot_homoscedasticity()
+Test: Breusch-Pagan test
+Plot: Scale-Location plot
+# Normality
+Purpose: Tests normality of residuals
+Methods: test_normality(), plot_normality()
+Test: Shapiro-Wilk test
+Plot: Q-Q plot
+# Independence
+Purpose: Tests independence of residuals
+Methods: test_independence(), plot_independence()
+Test: Durbin-Watson statistic
+Plot: Residuals vs Order plot
+# DiagnosticSummary
+Purpose: Comprehensive reporting of all diagnostic results
+Methods: show_summary()
+Features: Consolidated results and interpretations
+# Dependencies
+import numpy as np
 import pandas as pd
+import scipy.stats as sp
+from scipy.stats import f
 import statsmodels.api as sm
-import AssumpHelp
+import matplotlib.pyplot as plt
+import sklearn as sk
+import os
 
-# sample dataset
-df = pd.DataFrame({
-    "y": [10, 12, 13, 15, 16, 18],
-    "x1": [1, 2, 3, 4, 5, 6]
-})
+# Required packages:
 
-X = sm.add_constant(df["x1"])
-y = df["y"]
+numpy - Numerical computations
+pandas - Data manipulation
+scipy - Statistical tests
+statsmodels - Regression analysis and statistical tests
+matplotlib - Plotting and visualization
+scikit-learn - Machine learning utilities
+# Installation
+Install the required packages using pip:
 
-model = sm.OLS(y, X).fit()
-
-print("\n=== FUNCTIONAL EXAMPLES ===")
-
-# interpret_dw()
-print("\n--- interpret_dw() Example ---")
-print("DW 1.5:", AssumpHelp.interpret_dw(1.5))
-print("DW 2.0:", AssumpHelp.interpret_dw(2.0))
-
-# prepare_vars()
-print("\n--- prepare_vars() Example ---")
-fitted, residuals = AssumpHelp.prepare_vars(model, X, y)
-print("Predictions (first 5):", fitted[:5])
-print("Residuals (first 5):", residuals[:5])
-
-print("\n=== END OF FUNCTIONAL TESTS ===")
-```
-# Example Output
-```txt
-=== FUNCTIONAL EXAMPLES ===
-
---- interpret_dw() Example ---
-DW 1.5: DW statistic close to 2 indicates no autocorrelation assumption NOT VIOLATED.
-DW 2.0: DW statistic close to 2 indicates no autocorrelation assumption NOT VIOLATED.
-
---- prepare_vars() Example ---
-Predictions (first 5): 0    10.142857
-1    11.685714
-2    13.228571
-3    14.771429
-4    16.314286
-dtype: float64
-Residuals (first 5): 0   -0.142857
-1    0.314286
-2   -0.228571
-3    0.228571
-4   -0.314286
-dtype: float64
-
-```
-# Summary:
-
-1. Linearity (Check for a straight-line relationship)
-
-Statistical Test: Ramsey RESET Test (Outputs the F-statistic and p-value).
-
-Visual Plot: Residuals vs Fitted Plot (Look for a random scatter of points, a curve means a violation).
-
-2. Homoscedasticity (Check for equal spread of errors)
-
-Statistical Test: Breusch-Pagan Test (Outputs the BP-statistic and p-value).
-
-Visual Plot: Scale-Location Plot (Look for a flat, horizontal line; a fanning shape means unequal spread).
-
-3. Normality (Check if errors follow a bell curve)
-
-Statistical Test: Shapiro-Wilk Test (Outputs the W-statistic and p-value).
-
-Visual Plot: Normal Q-Q Plot (Check that most points follow the diagonal line; significant bending means non-normal errors).
-
-4. Independence (Check for uncorrelated errors)
-
-Statistical Test: Durbin-Watson (DW) Statistic (Outputs a single value for interpretation).
-
-Visual Plot: Residuals vs Order Plot (Look for a random scatter of points over the observation index; patterns mean autocorrelation).
-# Project Structure
-```txt
-├── AssumpHelp/
-│   ├── __init__.py
-│   ├── hypothesis.py
-│   ├── linearity.py
-│   ├── homoscedasticity.py
-│   ├── normality.py
-│   ├── independence.py
-│   ├── utilities.py
-│   ├── DiagnosticSummary.py  <-- Class for the final report
-│   ├── linplot_interpretation_guide.txt
-│   ├── homplot_interpretation_guide.txt
-│   ├── normplot_interpretation_guide.txt
-│   ├── indepplot_interpretation_guide.txt
-│   └── test                   
-├── examples/
-│   └── (e.g., usage_notebook.ipynb)
-├── tests/
-│   └── sample
-├── README.md
-├── requirements.txt
-├── setup.py
-└── LICENSE
+```bash
+pip install AssumpHelp
 ```
 
+# Usage
+Basic Workflow
+Prepare your data and model
 
-# When to Use AssumpHelp
+# Your regression model (scikit-learn or similar)
+```bash
+model = YourRegressionModel()
+X = your_features
+y = your_target
+Initialize diagnostic classes
 
-Use this project if you want:
+linearity_test = Linearity(model, X, y)
+homoscedasticity_test = Homoscedasticity(model, X, y)
+normality_test = Normality(model, X, y)
+independence_test = Independence(model, X, y)
+Run tests and generate plots
 
--A simple linear regression helper
--Easy-to-read summaries
--Minimal code complexity
--Perfect for school projects, assignments, and beginner ML learning
+# Test assumptions
+linearity_test.test_linearity()
+linearity_test.plot_linearity()
 
+homoscedasticity_test.test_homoscedasticity()
+homoscedasticity_test.plot_homoscedasticity()
 
-# Core Developers 
-# (Creator of the Hypothesis class and full regression notebook.)
-**[Kirsten Roise G. Moog & Rodel P. Badilla Jr.]** --> Inceptionist & Structural Design 
-- Designed clean separation of concerns  
-- Implementing codes engine  
-- Created visualization tools
-- Enhanced plotting capabilities  
+normality_test.test_normality()
+normality_test.plot_normality()
 
-**[James Walte Prollo, Zell Caamino, Hannah Dennisse Y. AQUE]** --> Testing & Documentation 
-- Encouragement/Guidance (Encourage, Guide, and Back (support))
-- Built comprehensive test suite  
-- Wrote user documentation.
-- Quality assurance  
+independence_test.test_independence()
+independence_test.plot_independence()
+Generate comprehensive summary
 
+summary = DiagnosticSummary(linearity_test, homoscedasticity_test, 
+                          normality_test, independence_test)
+summary.show_summary()
+```
+# Advanced Features
+# Feature Scaling
+Use the fit_transform() method to standardize features before testing:
 
-# Special Thanks
-- We are inspired to go beyond mere prediction; we seek the deep understanding and comprehensive diagnostics that only a robust statistical approach can  provide
-  influend style by Statistical regression diagnostic assumptions. 
+linearity_test.fit_transform()
+Custom Interpretation
+The notebook includes built-in interpretation guides that provide:
 
+Clear explanations of p-value significance,Visual cues for plot interpretation,Actionable recommendations for addressing violations
+Statistical Tests Explained
+# Ramsey RESET Test
+Null Hypothesis: The model is correctly specified (linear)
+Alternative Hypothesis: The model is misspecified (non-linear relationships exist)
+Interpretation: High p-value (> 0.05) suggests linearity is maintained
+# Breusch-Pagan Test
+Null Hypothesis: Homoscedasticity (constant variance)
+Alternative Hypothesis: Heteroscedasticity (non-constant variance)
+Interpretation: High p-value (> 0.05) suggests homoscedasticity is maintained
+# Shapiro-Wilk Test
+Null Hypothesis: Residuals are normally distributed
+Alternative Hypothesis: Residuals are not normally distributed
+Interpretation: High p-value (> 0.05) suggests normality is maintained
+# Durbin-Watson Test
+Range: 0 to 4
+Interpretation:
+~2.0: No autocorrelation
+< 2.0: Positive autocorrelation
+2.0: Negative autocorrelation
 
+# Diagnostic Plots Guide
+Residuals vs Fitted Plot
+Look for: Random scatter around zero
+Problem indicators: Patterns, curves, or funnel shapes
+Indicates: Linearity and homoscedasticity issues
+# Scale-Location Plot
+Look for: Horizontal line with random spread
+Problem indicators: Increasing/decreasing spread
+Indicates: Heteroscedasticity
+# Q-Q Plot
+Look for: Points following the straight line
+Problem indicators: S-shaped curves or deviations at tails
+Indicates: Non-normality
+# Residuals vs Order Plot
+Look for: Random scatter with no patterns
+Problem indicators: Trends, cycles, or autocorrelation
+Indicates: Independence violations
+# Common Issues and Solutions
+# Linearity Violations
+Solutions: Transform variables, add polynomial terms, use non-linear models
+# Heteroscedasticity
+Solutions: Transform dependent variable, use weighted least squares, robust standard errors
+# Non-Normality
+Solutions: Transform variables, increase sample size, use non-parametric methods
 
+# The framework generates:
 
----
-# Support
-- Email: moog.kirstenroise@gmail.com
-- Issues: GitHub Issues  
-- Discussions: GitHub Discussions  
----
+Statistical test results with test statistics and p-values
+Diagnostic plots with interpretation guides
+Comprehensive summary consolidating all findings
+Actionable recommendations for addressing violations
+# Best Practices
+Always test assumptions before interpreting regression results
+Use multiple diagnostic methods (both tests and plots)
+Consider sample size when interpreting test results
+Address violations systematically rather than ignoring them
+Document all diagnostic procedures for reproducibility
+# Limitations
+Tests assume sufficient sample size for reliable results
+Some tests are sensitive to outliers
+Visual interpretation requires experience and judgment
+Multiple testing may increase Type I error rates
+# Contributing
+This framework is designed to be extensible. Common enhancements include:
 
-# Version 1.0 (Current)
--Basic OLS regression
--Statsmodels summary
--Prediction support
+Additional statistical tests
+Custom visualization options
+Integration with other modeling frameworks
+Automated remediation suggestions
+# License
+This project is licensed under the MIT License – see the LICENSE file for details.
 
+Note: This diagnostic framework helps ensure the validity of your regression analysis by systematically checking fundamental statistical assumptions. Regular use of these tools will improve the reliability and interpretability of your regression models.
