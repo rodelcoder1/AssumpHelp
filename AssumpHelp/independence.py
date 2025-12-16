@@ -11,10 +11,11 @@ class Independence(Hypothesis):
     - Residuals vs Order plot
     """
     def fit(self):
-        self.fitted_model = sm.OLS(self.y, self.x_cons).fit()
-        self.fitted, self.residuals = prepare_vars(self.fitted_model, self.x_cons, self.y)
+        self.model.fit(self.x_cons, self.y)
+        self.fitted, self.residuals = prepare_vars(self.model, self.x_cons, self.y)
+        return self
         
-    def test_independence(self):
+    def test(self):
         """
         Perform Durbin-Watson autocorrelation test.
         """
@@ -27,10 +28,11 @@ class Independence(Hypothesis):
         interpretation = interpret_dw(dw_stat)
         print("\n" + interpretation)
    
-    def plot_independence(self):
+    def plot(self):
         """
         Plot residuals vs observation order.
         """
-        plot_assump(self.fitted,self.residuals, "independence")
+        figure, axes = plot_assump(self.fitted,self.residuals, "independence")
         print("\nInterpretation:\n")
         print(load_output("indepplot_interpretation_guide.txt"))
+        return figure, axes
