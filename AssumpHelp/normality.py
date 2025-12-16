@@ -9,10 +9,11 @@ class Normality(Hypothesis):
     - Q-Q plot
     """
     def fit(self):
-        self.fitted_model = sm.OLS(self.y, self.x_cons).fit()
-        self.fitted, self.residuals = prepare_vars(self.fitted_model, self.x_cons, self.y)
+        self.model.fit(self.x_cons, self.y)
+        self.fitted, self.residuals = prepare_vars(self.model, self.x_cons, self.y)
+        return self
    
-    def test_normality(self):
+    def test(self):
         """
         Perform Shapiro-Wilk test.
         """
@@ -26,10 +27,11 @@ class Normality(Hypothesis):
         print("\n" + interpretation)
         
     
-    def plot_normality(self):
+    def plot(self):
         """
         Plot Q-Q plot.
         """
-        plot_assump(self.fitted, self.residuals, "normality")
+        figure, axes = plot_assump(self.fitted, self.residuals, "normality")
         print("Interpretation Guide:\n")
         print(load_output("normplot_interpretation_guide.txt"))
+        return figure, axes
