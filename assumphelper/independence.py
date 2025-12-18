@@ -25,7 +25,7 @@ class Independence(Hypothesis):
             raise NotFittedError("Call fit() before test().")
 
         check_dw_resids(self.residuals)
-        dw_stat = durbin_watson(self.residuals)
+        dw_stat = durbin_watson(self.residuals.ravel())
         self.result = dw_stat
         print("Durbin-Watson Test for Independence")
         print(f"DW-statistic: {dw_stat:.4f}")
