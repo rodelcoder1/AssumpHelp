@@ -20,8 +20,9 @@ class Normality(Hypothesis):
         """
          if not getattr(self, "fit_done", False):
             raise NotFittedError("Call fit() before test().")
-             
-        shapiro_stat, shapiro_pval = sp.shapiro(self.residuals)
+
+        check_shapiro_resids(self.residuals)
+        shapiro_stat, shapiro_pval = sm.shapiro(self.residuals)
         self.result = shapiro_pval
         print("Shapiro-Wilk Test for Normality")
         print(f"W-statistic: {shapiro_stat:.4f}      p-value: {shapiro_pval:.4f}")
