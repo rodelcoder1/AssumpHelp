@@ -9,3 +9,7 @@ class NotFittedError(RuntimeError):
 class InvalidArrayError(TypeError):
     """Raised when an input is not a valid NumPy array."""
     pass
+    
+class UndefinedTestError(RuntimeError):
+    """Raised when a statistical test is undefined (e.g., zero residual variance)."""
+    pass
