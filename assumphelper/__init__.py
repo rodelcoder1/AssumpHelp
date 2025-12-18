@@ -17,7 +17,7 @@ from .utilities import (
 )
 
 from .exceptions import InvalidModelError, NotFittedError, InvalidArrayError, UndefinedTestError
-from .validate import validate_sklearn_regressor, validate_array, validate_residual_variance
+from .check import check_sklearn_regressor, check_array, check_resid_var, check_shapiro_resids
 
 
 __all__ = [
@@ -25,9 +25,10 @@ __all__ = [
     "NotFittedError",
     "InvalidArrayError",
     "UndefinedTestError",
-    "validate_sklearn_regressor",
-    "validate_array",
-    "validate_residual_variance",
+    "check_sklearn_regressor",
+    "check_array",
+    "check_resid_var",
+    "check_shapiro_resids",
     "Hypothesis",
     "Linearity",
     "Homoscedasticity",
