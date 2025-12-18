@@ -20,9 +20,10 @@ class Independence(Hypothesis):
         """
         Perform Durbin-Watson autocorrelation test.
         """
-         if not getattr(self, "fit_done", False):
+        if not getattr(self, "fit_done", False):
             raise NotFittedError("Call fit() before test().")
-             
+
+        
         dw_stat = durbin_watson(self.residuals)
         self.result = dw_stat
         print("Durbin-Watson Test for Independence")
