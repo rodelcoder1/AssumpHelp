@@ -2,6 +2,7 @@ import statsmodels.api as sm
 from statsmodels.stats.diagnostic import het_breuschpagan
 from .hypothesis import Hypothesis
 from .utilities import prepare_vars, interpret_pval, plot_assump, load_output
+from .check import check_resid_var
 
 class Homoscedasticity(Hypothesis):
     """
