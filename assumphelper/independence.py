@@ -2,6 +2,7 @@ import statsmodels.api as sm
 from statsmodels.stats.stattools import durbin_watson
 from .hypothesis import Hypothesis
 from .utilities import prepare_vars, interpret_dw, plot_assump, load_output
+from .check import check_dw_resids
 
 
 class Independence(Hypothesis):  
@@ -23,7 +24,7 @@ class Independence(Hypothesis):
         if not getattr(self, "fit_done", False):
             raise NotFittedError("Call fit() before test().")
 
-        
+        check_dw_resids(self.residuals)
         dw_stat = durbin_watson(self.residuals)
         self.result = dw_stat
         print("Durbin-Watson Test for Independence")
