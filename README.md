@@ -10,7 +10,7 @@ This Library provides a comprehensive framework for testing the fundamental assu
 Linear regression relies on several statistical assumptions (linearity, normality, homoscedasticity, independence, etc.). Many students and early researchers struggle with:
 
 * Knowing **which tests** to apply
-* Interpreting **statistical results** correctly
+* Guide for interpreting **statistical results**
 * Presenting **clear diagnostics and plots**
 
 **AssumpHelper** addresses these challenges by offering a structured, reusable workflow that checks regression assumptions and explains the results in a clear and organized way.
