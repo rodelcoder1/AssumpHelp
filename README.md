@@ -1,4 +1,4 @@
-# AssumpHelper
+<img width="859" height="678" alt="image" src="https://github.com/user-attachments/assets/896698b8-f57e-45ea-80f7-ad7aa661cf62" /># AssumpHelper
 # Overview
 This Library provides a comprehensive framework for testing the fundamental assumptions of linear regression models. It implements automated diagnostic tools to check whether your regression model meets the statistical requirements necessary for valid inference and prediction.
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
@@ -72,13 +72,51 @@ pip install assumphelper
 
 ---
 
-## 🚀 Basic Usage
+## 🚀 Sample Usage
 
 ```python
-# code here
-```
-<img width="578" height="455" alt="image" src="https://github.com/user-attachments/assets/718688f0-4694-44e0-95d0-b04e8131a09d" /
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import assumphelper as ah
 
+np.random.seed(42)
+
+# Generate clean linear data
+n = 100
+X = np.linspace(1, 50, n).reshape(-1, 1)
+y = 2.5 * X.ravel() + 15 + np.random.normal(0, 2, n)
+
+#Checking Linearity
+model = LinearRegression()
+
+linearity = ah.Linearity(model, X, y)
+linearity.fit()
+linearity.test()
+```
+RESET Test for Linearity
+F-statistic: 5.2888      p-value: 0.0710
+
+Interpretation:
+
+
+If alpha = 0.05 and p-value > 0.05: Assumption of Linearity is NOT VIOLATED.
+```python
+linearity.plot()
+```
+<img width="859" height="678" alt="image" src="https://github.com/user-attachments/assets/ebef0c33-fca4-4b1f-853c-73720fe33039" />
+Interpretation Guide:
+
+Linearity Plot (Residuals vs Fitted Values)
+
+If the plot shows a random scatter of points around the horizontal axis with no clear curve, the relationship between the predictors and the outcome is linear.
+> The assumption of linearity is NOT VIOLATED.
+
+If the plot shows a curve or systematic pattern in the scatter of points, the relationship between the predictors and the outcome is not linear.
+> The assumption of linearity is VIOLATED.
+
+Always double check with the RESET test.
+(<Figure size 800x600 with 1 Axes>,
+ <Axes: title={'center': 'Residuals vs Fitted Plot'}, xlabel='Fitted Values', ylabel='Residuals'>)
 ---
 
 ## 📊 Outputs
